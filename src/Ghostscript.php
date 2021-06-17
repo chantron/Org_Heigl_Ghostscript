@@ -181,6 +181,13 @@ class Ghostscript
     protected $useCie = false;
 
     /**
+     * Use the EPS crop eps parameter
+     *
+     * @var bool
+     */
+    protected $epsCrop = false;
+
+    /**
      * Store any default input-profiles
      *
      * @var array $_defaultProfile
@@ -229,6 +236,8 @@ class Ghostscript
         'application/eps',
         'application/pdf',
         'application/ps',
+        'image/eps',
+        'image/x-eps',
     ];
 
     /**
@@ -372,7 +381,7 @@ class Ghostscript
         }
 
         $this->outfile = $name;
-        
+
         return $this;
     }
 
@@ -457,6 +466,9 @@ class Ghostscript
             $string .= ' -dGraphicsAlphaBits=' . $this->getGraphicsAntiAliasing();
         }
 
+        if (true === $this->getEpsCrop()) {
+            $string .= ' -dEPSCrop';
+        }
 
         if (true === $this->useCie()) {
             $string .= ' -dUseCIEColor';
@@ -706,6 +718,29 @@ class Ghostscript
     public function getBox()
     {
         return $this->useBox;
+    }
+
+    /**
+     * Sets whether or not to use he EPSCrop parameter
+     *
+     * @param bool $epsCrop
+     * @return self
+     */
+    public function setEpsCrop(bool $epsCrop = true): self
+    {
+        $this->epsCrop = $epsCrop;
+
+        return $this;
+    }
+
+    /**
+     * Gets whether or not to use the EPSCrop parameter
+     *
+     * @return bool
+     */
+    public function getEpsCrop(): bool
+    {
+        return $this->epsCrop;
     }
 
     /**

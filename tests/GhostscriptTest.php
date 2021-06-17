@@ -231,6 +231,25 @@ class GhostscriptTest extends TestCase
                 . $filename
                 . '"';
         $this->assertEquals($expect, $f->getRenderString());
+
+        $f->setEpsCrop(true);
+        $expect = $path
+                . ' -dSAFER -dQUIET -dNOPLATFONTS -dNOPAUSE -dBATCH -sOutputFile="'
+                . $dir
+                . 'output.jpeg" -sDEVICE=jpeg -dJPEGQ=75 -dQFactor=0.75 -r72 -dTextAlphaBits=1'
+                .' -dGraphicsAlphaBits=4 -dEPSCrop "'
+                . $filename
+                . '"';
+
+        $f->setEpsCrop(false);
+        $expect = $path
+                . ' -dSAFER -dQUIET -dNOPLATFONTS -dNOPAUSE -dBATCH -sOutputFile="'
+                . $dir
+                . 'output.jpeg" -sDEVICE=jpeg -dJPEGQ=75 -dQFactor=0.75 -r72 -dTextAlphaBits=1'
+                .' -dGraphicsAlphaBits=4 "'
+                . $filename
+                . '"';
+        $this->assertEquals($expect, $f->getRenderString());
     }
 
     public function testRendering()
