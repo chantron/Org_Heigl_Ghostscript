@@ -240,6 +240,8 @@ class GhostscriptTest extends TestCase
                 .' -dGraphicsAlphaBits=4 -dEPSCrop "'
                 . $filename
                 . '"';
+        $this->assertEquals($expect, $f->getRenderString());
+
 
         $f->setEpsCrop(false);
         $expect = $path
@@ -249,6 +251,36 @@ class GhostscriptTest extends TestCase
                 .' -dGraphicsAlphaBits=4 "'
                 . $filename
                 . '"';
+        $this->assertEquals($expect, $f->getRenderString());
+
+        $f->setFitPage(true);
+        $expect = $path
+            . ' -dSAFER -dQUIET -dNOPLATFONTS -dNOPAUSE -dBATCH -sOutputFile="'
+            . $dir
+            . 'output.jpeg" -sDEVICE=jpeg -dJPEGQ=75 -dQFactor=0.75 -r72 -dTextAlphaBits=1'
+            . ' -dGraphicsAlphaBits=4 -dFitPage "'
+            . $filename
+            . '"';
+        $this->assertEquals($expect, $f->getRenderString());
+
+        $f->setDeviceWidth(1200);
+        $expect = $path
+            . ' -dSAFER -dQUIET -dNOPLATFONTS -dNOPAUSE -dBATCH -sOutputFile="'
+            . $dir
+            . 'output.jpeg" -sDEVICE=jpeg -dJPEGQ=75 -dQFactor=0.75 -r72 -dTextAlphaBits=1'
+            . ' -dGraphicsAlphaBits=4 -dFitPage -dDEVICEWIDTH=1200 "'
+            . $filename
+            . '"';
+        $this->assertEquals($expect, $f->getRenderString());
+
+        $f->setDeviceHeight(1200);
+        $expect = $path
+            . ' -dSAFER -dQUIET -dNOPLATFONTS -dNOPAUSE -dBATCH -sOutputFile="'
+            . $dir
+            . 'output.jpeg" -sDEVICE=jpeg -dJPEGQ=75 -dQFactor=0.75 -r72 -dTextAlphaBits=1'
+            . ' -dGraphicsAlphaBits=4 -dFitPage -dDEVICEWIDTH=1200 -dDEVICEHEIGHT=1200 "'
+            . $filename
+            . '"';
         $this->assertEquals($expect, $f->getRenderString());
     }
 

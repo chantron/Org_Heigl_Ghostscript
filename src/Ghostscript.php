@@ -227,6 +227,27 @@ class Ghostscript
     protected $pageEnd = null;
 
     /**
+     * The device's width. -dDEVICEWIDTH=x
+     *
+     * @var int|null
+     */
+    protected $deviceWidth = null;
+
+    /**
+     * The device's width. -dDEVICEHEIGHT=x
+     *
+     * @var int|null
+     */
+    protected $deviceHeight = null;
+
+    /**
+     * Whether or not to fit the image to the page.
+     *
+     * @var bool
+     */
+    protected $fitPage = false;
+
+    /**
      * Which MIME-Types are supported
      *
      * @var array $supportedMimeTypes
@@ -472,6 +493,18 @@ class Ghostscript
 
         if (true === $this->useCie()) {
             $string .= ' -dUseCIEColor';
+        }
+
+        if (true === $this->getFitPage()) {
+            $string .= ' -dFitPage';
+        }
+
+        if ($this->getDeviceWidth()) {
+            $string .= ' -dDEVICEWIDTH=' . $this->getDeviceWidth();
+        }
+
+        if ($this->getDeviceHeight()) {
+            $string .= ' -dDEVICEHEIGHT=' . $this->getDeviceHeight();
         }
 
         // Set the Rendered Box.
@@ -741,6 +774,75 @@ class Ghostscript
     public function getEpsCrop(): bool
     {
         return $this->epsCrop;
+    }
+
+    /**
+     * Set the device's width.
+     *
+     * @param int $width
+     * @return self
+     */
+    public function setDeviceWidth(int $width = null): self
+    {
+        $this->deviceWidth = $width;
+
+        return $this;
+    }
+
+    /**
+     * Set the device's height
+     *
+     * @param int $height
+     * @return self
+     */
+    public function setDeviceHeight(int $height = null): self
+    {
+        $this->deviceHeight = $height;
+
+        return $this;
+    }
+
+    /**
+     * Get the device's width
+     *
+     * @return int|null
+     */
+    public function getDeviceWidth(): ?int
+    {
+        return $this->deviceWidth;
+    }
+
+    /**
+     * get the device's height
+     *
+     * @return int|null
+     */
+    public function getDeviceHeight(): ?int
+    {
+        return $this->deviceHeight;
+    }
+
+    /**
+     * Whether or not to fit the image to the page.
+     *
+     * @param bool $fitPage
+     * @return self
+     */
+    public function setFitPage(bool $fitPage): self
+    {
+        $this->fitPage = $fitPage;
+
+        return $this;
+    }
+
+    /**
+     * Get whether or not the fit the page
+     *
+     * @return bool
+     */
+    public function getFitPage(): bool
+    {
+        return $this->fitPage;
     }
 
     /**
